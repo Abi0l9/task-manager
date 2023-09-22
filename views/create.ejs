@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <%- include('./base/head') %>
+    <title>Create Task</title>
+  </head>
+  <body>
+    <%- include('./base/header') %>
+
+    <div class="my-4"><%- include('./base/form') %></div>
+    <script>
+      const title = document.getElementById("title");
+      const description = document.getElementById("description");
+      let message = document.getElementById("message");
+      message.style.display = "none";
+
+      let titleMsg = document.getElementById("titleMsg");
+      let btn = document.getElementById("submitBtn");
+      let form = document.getElementById("form");
+
+      const submit = (e) => {
+        if (title.value === "") {
+          e.preventDefault;
+          titleMsg.textContent = "Please add a title";
+          return false;
+        }
+
+        message.style.display = "block";
+        e.preventDefault();
+
+        return false;
+      };
+
+      form.addEventListener("submit", submit);
+    </script>
+  </body>
+</html>

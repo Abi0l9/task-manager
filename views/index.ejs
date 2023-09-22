@@ -1,29 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" type="text/css" href="styles.css" />
-    <script src="https://cdn.tailwindcss.com"></script>
-    <title>EJS Example</title>
+    <%- include('./base/head') %>
+    <title>Home</title>
   </head>
   <body>
-    <div class="bg-gray-900 flex flex-row py-2 px-4">
-      <div class="flex w-3/4 md:flex-1 text-gray-300">Home</div>
-      <div class="w-1/4 flex flex-row justify-between items-center">
-        <div class="text-gray-400">
-          <a href="/create" class="">create</a>
-        </div>
-        <div class="text-gray-400">
-          <a href="/tasks" class="">tasks</a>
-        </div>
-      </div>
-    </div>
-    <!-- <h1 class="text-green-700 font-semibold">Welcome to this page</h1>
-    <ol>
-      <% for (let item of data){ %>
-      <li class="bg-gray-500"><%= item.name %></li>
-      <% } %>
-    </ol> -->
+    <%- include('./base/header') %>
+    <div class="my-4">List of created tasks</div>
   </body>
 </html>

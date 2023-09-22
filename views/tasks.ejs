@@ -1,12 +1,16 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="styles.css" />
-    <title>Added tasks</title>
+    <%- include('./base/head') %>
+    <title>EJS Example</title>
   </head>
   <body>
-    <%= tasks %>
+    <%- include('./base/header') %>
+    <div class="">Created tasks will appear here...</div>
+    <ol>
+      <% tasks.forEach(function(task){ %>
+      <li><%= task.title %></li>
+      <% }) %>
+    </ol>
   </body>
 </html>

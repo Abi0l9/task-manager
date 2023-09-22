@@ -1,8 +1,10 @@
 const express = require("express");
-const { getUsers } = require("./data");
 const app = express();
+const bodyParser = require("body-parser");
+const { getUsers } = require("./data");
 const taskRouter = require("./router/tasks");
 
+app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static("public"));
 app.set("view engine", "ejs");
 
