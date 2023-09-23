@@ -6,6 +6,77 @@
   </head>
   <body>
     <%- include('./base/header') %>
-    <div class="my-4">List of created tasks</div>
+    <div class="my-2 px-2">Active tasks</div>
+    <div>
+      <% active.forEach(function(task){ %>
+      <div class="my-2 px-2 w-full">
+        <div
+          class="text-gray-800 bg-gray-300 flex flex-row items-center justify-between w-full rounded-[2px] p-2"
+        >
+          <a href="/tasks/<%- task.id %>" class=""> <%= task.title %> </a>
+          <div class="">
+            <form action="/tasks/<%- task.id %>/edit" method="patch">
+              <input
+                class="task outline-none active:border active:border-blue-500 active:bg-blue-500"
+                type="checkbox"
+                name="<%- task.id %>"
+                id="active"
+              />
+            </form>
+          </div>
+        </div>
+      </div>
+      <% }) %>
+    </div>
+
+    <div class="my-2 px-2">Completed tasks</div>
+    <div>
+      <% completed.forEach(function(task){ %>
+      <div class="my-2 px-2 w-full">
+        <div
+          class="text-gray-800 bg-gray-300 flex flex-row items-center justify-between w-full rounded-[2px] p-2"
+        >
+          <a href="/tasks/<%- task.id %>" class=""> <%= task.title %> </a>
+          <div class="">
+            <form action="/tasks/<%- task.id %>" method="patch">
+              <input
+                class="task outline-none active:border active:border-blue-500 active:bg-blue-500"
+                type="checkbox"
+                name="<%- task.id %>"
+                id="completed"
+                checked
+              />
+            </form>
+          </div>
+        </div>
+      </div>
+      <% }) %>
+    </div>
+
+    <script>
+      const activeTasks = document.querySelectorAll("#active");
+      const completedTasks = document.querySelectorAll("#completed");
+      const allTasks = document.querySelectorAll(".task");
+      const form = document.getElementById("form");
+
+      allTasks.forEach((task) => {
+        task.addEventListener("click", (e) => {
+          const taskId = e.target.name;
+          fetch(`/tasks/${taskId}`, {
+            method: "PATCH",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ completed: e.target.checked }),
+          })
+            .then((response) => response.json())
+            .then((data) => {
+              console.log(data);
+              location.reload();
+            })
+            .catch((err) => console.error(err));
+        });
+      });
+    </script>
   </body>
 </html>

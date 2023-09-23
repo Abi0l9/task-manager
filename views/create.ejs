@@ -11,8 +11,8 @@
     <script>
       const title = document.getElementById("title");
       const description = document.getElementById("description");
-      let message = document.getElementById("message");
-      message.style.display = "none";
+      // let message = document.getElementById("message");
+      // message.style.display = "none";
 
       let titleMsg = document.getElementById("titleMsg");
       let btn = document.getElementById("submitBtn");
@@ -20,15 +20,15 @@
 
       const submit = (e) => {
         if (title.value === "") {
-          e.preventDefault;
+          e.preventDefault();
           titleMsg.textContent = "Please add a title";
+
           return false;
         }
 
-        message.style.display = "block";
-        e.preventDefault();
+        // message.style.display = "block";
 
-        return false;
+        return true;
       };
 
       form.addEventListener("submit", submit);

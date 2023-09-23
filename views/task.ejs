@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <%- include('./base/head') %>
+    <title>Task | <%= title %></title>
+  </head>
+  <body>
+    <%- include('./base/header') %>
+    <div class="my-2 p-2 w-full">
+      <p class="text-2xl text-gray-800"><%= task.title %></p>
+      <p class="text-gray-500 text-xs">
+        <%= task.description || 'no description' %>
+      </p>
+      <p class="text-gray-500 text-xs">
+        <%= !task.completed ? 'active': 'inactive' %>
+      </p>
+    </div>
+  </body>
+</html>

@@ -2,15 +2,11 @@
 <html lang="en">
   <head>
     <%- include('./base/head') %>
-    <title>EJS Example</title>
+    <title>All Tasks</title>
   </head>
   <body>
     <%- include('./base/header') %>
     <div class="">Created tasks will appear here...</div>
-    <ol>
-      <% tasks.forEach(function(task){ %>
-      <li><%= task.title %></li>
-      <% }) %>
-    </ol>
+    <%- include('./base/taskList') %>
   </body>
 </html>

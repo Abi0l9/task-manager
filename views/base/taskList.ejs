@@ -1,0 +1,9 @@
+<div>
+  <% tasks.forEach(function(task){ %>
+  <div class="my-2 px-2 w-full">
+    <p class="text-gray-800 bg-gray-300 w-full rounded-[2px] p-2">
+      <a href="/tasks/<%- task.id %>" class=""> <%= task.title %> </a>
+    </p>
+  </div>
+  <% }) %>
+</div>

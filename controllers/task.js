@@ -5,7 +5,7 @@ const getTasks = async (_, response) => {
   response.render("tasks", { tasks });
 };
 
-const getCreateTaskPage = async (request, response) => {
+const getCreateTaskPage = (request, response) => {
   response.render("create");
 };
 
@@ -16,6 +16,9 @@ const createTasks = async (request, response) => {
   const newTask = new Task({ title, description });
   try {
     await newTask.save();
+    setTimeout(() => {
+      message = "";
+    }, 3000);
   } catch (e) {
     message = e.message;
   }
@@ -25,8 +28,36 @@ const createTasks = async (request, response) => {
   });
 };
 
-const getSuccessPage = async (request, response) => {
+const getSuccessPage = (request, response) => {
   response.render("success");
+};
+
+const getOneTask = async (request, response) => {
+  const taskId = request.params.taskId;
+  const task = await Task.findById(taskId);
+
+  if (!task) {
+    response.render("tasks");
+  }
+
+  response.render("task", { task, title: task.title });
+};
+
+const editTask = async (request, response) => {
+  const body = request.body;
+  const taskId = request.params.taskId;
+  const task = await Task.findById(taskId);
+
+  if (!task) {
+    return response.send("Task not found, please refresh browser.");
+  }
+
+  try {
+    await Task.findByIdAndUpdate(taskId, body);
+    return response.json({ message: "task completed" });
+  } catch (e) {
+    return response.json({ error: e.message });
+  }
 };
 
 module.exports = {
@@ -34,4 +65,6 @@ module.exports = {
   createTasks,
   getCreateTaskPage,
   getSuccessPage,
+  getOneTask,
+  editTask,
 };

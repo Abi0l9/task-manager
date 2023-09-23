@@ -3,7 +3,9 @@ const app = express();
 const bodyParser = require("body-parser");
 const { getUsers } = require("./data");
 const taskRouter = require("./router/tasks");
+const Task = require("./models/Task");
 
+app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static("public"));
 app.set("view engine", "ejs");
@@ -11,9 +13,11 @@ app.set("view engine", "ejs");
 require("./db");
 
 app.use("/tasks/", taskRouter);
-app.get("/", (req, res) => {
-  const data = getUsers();
-  res.render("index", { data });
+app.get("/", async (req, res) => {
+  const tasks = await Task.find({});
+  const active = tasks?.filter((task) => !task.completed);
+  const completed = tasks?.filter((task) => task.completed);
+  res.render("index", { active, completed });
 });
 
 const PORT = 8000;
