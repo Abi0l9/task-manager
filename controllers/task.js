@@ -90,12 +90,12 @@ const deleteTask = async (request, response) => {
 };
 
 module.exports = {
-  getTasks,
   createTasks,
+  getTasks,
   getCreateTaskPage,
   getSuccessPage,
   getOneTask,
-  editTask,
   getTaskEditPage,
+  editTask,
   deleteTask,
 };

@@ -1,7 +1,6 @@
 const express = require("express");
 const app = express();
 const bodyParser = require("body-parser");
-const { getUsers } = require("./data");
 const taskRouter = require("./router/tasks");
 const Task = require("./models/Task");
 
