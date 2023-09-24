@@ -6,56 +6,84 @@
   </head>
   <body>
     <%- include('./base/header') %>
-    <div class="my-2 px-2">Active tasks</div>
-    <div>
-      <% active.forEach(function(task){ %>
-      <div class="my-2 px-2 w-full">
-        <div
-          class="text-gray-800 bg-gray-300 flex flex-row items-center justify-between w-full rounded-[2px] p-2"
-        >
-          <a href="/tasks/<%- task.id %>" class=""> <%= task.title %> </a>
-          <div class="">
-            <form action="/tasks/<%- task.id %>/edit" method="patch">
-              <input
-                class="task outline-none active:border active:border-blue-500 active:bg-blue-500"
-                type="checkbox"
+    <section class="my-3">
+      <div class="my-2 px-2">Active tasks</div>
+      <div class="px-2 text-gray-500 text-xs">
+        <%= active.length < 1 ? `your active tasks will show up here...` : '' %>
+      </div>
+      <div>
+        <% active.forEach(function(task){ %>
+        <div class="my-2 px-2 w-full">
+          <div
+            class="text-gray-800 bg-gray-300 flex flex-row items-center justify-between w-full rounded-[2px] p-2"
+          >
+            <a href="/tasks/<%- task.id %>" class=""> <%= task.title %> </a>
+            <div class="flex flex-row gap-x-2 items-center">
+              <div class="">
+                <form action="" method="patch">
+                  <input
+                    class="task outline-none active:border active:border-blue-500 active:bg-blue-500"
+                    type="checkbox"
+                    name="<%- task.id %>"
+                    id="active"
+                  />
+                </form>
+              </div>
+              <div
+                data-taskId="<%- task.id %>"
                 name="<%- task.id %>"
-                id="active"
-              />
-            </form>
+                class="deleteBtn text-red-600 active:text-red-900 font-bold cursor-pointer"
+              >
+                X
+              </div>
+            </div>
           </div>
         </div>
+        <% }) %>
       </div>
-      <% }) %>
-    </div>
+    </section>
 
-    <div class="my-2 px-2">Completed tasks</div>
-    <div>
-      <% completed.forEach(function(task){ %>
-      <div class="my-2 px-2 w-full">
-        <div
-          class="text-gray-800 bg-gray-300 flex flex-row items-center justify-between w-full rounded-[2px] p-2"
-        >
-          <a href="/tasks/<%- task.id %>" class=""> <%= task.title %> </a>
-          <div class="">
-            <form action="/tasks/<%- task.id %>" method="patch">
-              <input
-                class="task outline-none active:border active:border-blue-500 active:bg-blue-500"
-                type="checkbox"
+    <section class="my-3">
+      <div class="my-2 px-2">Completed tasks</div>
+      <div>
+        <div class="px-2 text-gray-500 text-xs">
+          <%= completed.length < 1 ? `your completed tasks will show up here...`
+          : '' %>
+        </div>
+        <% completed.forEach(function(task){ %>
+        <div class="my-2 px-2 w-full">
+          <div
+            class="text-gray-800 bg-gray-300 flex flex-row items-center justify-between w-full rounded-[2px] p-2"
+          >
+            <a href="/tasks/<%- task.id %>" class=""> <%= task.title %> </a>
+            <div class="flex flex-row gap-x-2 items-center">
+              <div class="">
+                <form action="" method="patch">
+                  <input
+                    class="task outline-none active:border active:border-blue-500 active:bg-blue-500"
+                    type="checkbox"
+                    name="<%- task.id %>"
+                    id="completed"
+                    checked
+                  />
+                </form>
+              </div>
+              <div
+                data-taskId="<%- task.id %>"
                 name="<%- task.id %>"
-                id="completed"
-                checked
-              />
-            </form>
+                class="deleteBtn text-red-600 active:text-red-900 font-bold cursor-pointer"
+              >
+                X
+              </div>
+            </div>
           </div>
         </div>
+        <% }) %>
       </div>
-      <% }) %>
-    </div>
+    </section>
 
     <script>
-      const activeTasks = document.querySelectorAll("#active");
-      const completedTasks = document.querySelectorAll("#completed");
+      const deleteBtns = document.querySelectorAll(".deleteBtn");
       const allTasks = document.querySelectorAll(".task");
       const form = document.getElementById("form");
 
@@ -68,6 +96,25 @@
               "Content-Type": "application/json",
             },
             body: JSON.stringify({ completed: e.target.checked }),
+          })
+            .then((response) => response.json())
+            .then((data) => {
+              console.log(data);
+              location.reload();
+            })
+            .catch((err) => console.error(err));
+        });
+      });
+
+      deleteBtns.forEach((btn) => {
+        btn.addEventListener("click", (e) => {
+          const taskId = btn.dataset.taskid;
+
+          fetch(`/tasks/${taskId}`, {
+            method: "DELETE",
+            headers: {
+              "Content-Type": "application/json",
+            },
           })
             .then((response) => response.json())
             .then((data) => {

@@ -7,6 +7,8 @@ router
   .post("/create", tasks.createTasks)
   .get("/:taskId", tasks.getOneTask)
   .patch("/:taskId", tasks.editTask)
-  .get("/success", tasks.getSuccessPage);
+  .delete("/:taskId", tasks.deleteTask)
+  .get("/success", tasks.getSuccessPage)
+  .get("/:taskId/edit", tasks.getTaskEditPage);
 
 module.exports = router;

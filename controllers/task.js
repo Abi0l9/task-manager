@@ -52,9 +52,38 @@ const editTask = async (request, response) => {
     return response.send("Task not found, please refresh browser.");
   }
 
+  const message = body.completed ? "task completed" : "task status changed";
+
   try {
     await Task.findByIdAndUpdate(taskId, body);
-    return response.json({ message: "task completed" });
+    return response.json({ message });
+  } catch (e) {
+    return response.json({ error: e.message });
+  }
+};
+
+const getTaskEditPage = async (request, response) => {
+  const taskId = request.params.taskId;
+  const task = await Task.findById(taskId);
+
+  if (!task) {
+    return response.send("Task not found, please refresh browser.");
+  }
+
+  response.render("editTask", { task });
+};
+
+const deleteTask = async (request, response) => {
+  const taskId = request.params.taskId;
+  const task = await Task.findById(taskId);
+
+  if (!task) {
+    return response.send("Task not found, please refresh browser.");
+  }
+
+  try {
+    await Task.findByIdAndDelete(taskId);
+    return response.json({ message: "task Deleted" });
   } catch (e) {
     return response.json({ error: e.message });
   }
@@ -67,4 +96,6 @@ module.exports = {
   getSuccessPage,
   getOneTask,
   editTask,
+  getTaskEditPage,
+  deleteTask,
 };

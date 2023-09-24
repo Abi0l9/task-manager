@@ -11,9 +11,58 @@
       <p class="text-gray-500 text-xs">
         <%= task.description || 'no description' %>
       </p>
-      <p class="text-gray-500 text-xs">
-        <%= !task.completed ? 'active': 'inactive' %>
-      </p>
+      <div class="text-gray-500 text-xs my-1">
+        <% if (task.completed) { %>
+        <p
+          class="bg-gray-500 text-gray-100 rounded-md py-1 text-center px-2 w-[80px] shadow-lg"
+        >
+          completed
+        </p>
+        <% } else { %>
+        <p
+          class="bg-green-500 text-gray-100 rounded-md text-center py-1 px-2 w-[60px] shadow-lg"
+        >
+          active
+        </p>
+        <% } %>
+      </div>
+      <div
+        class="w-[100px] text-xs my-3 flex flex-row justify-between gap-x-2 items-center"
+      >
+        <button
+          name="edit"
+          data-id="<%= task.id %>"
+          class="border border-blue-500 py-[2px] px-2 cursor-pointer rounded-md active:bg-blue-500"
+        >
+          edit
+        </button>
+        <button
+          name="delete"
+          data-id="<%= task.id %>"
+          class="border border-red-500 py-[2px] px-2 cursor-pointer rounded-md active:bg-red-500"
+        >
+          delete
+        </button>
+      </div>
     </div>
+    <script>
+      const btns = document.querySelectorAll("button");
+
+      btns.forEach((btn) => {
+        btn.addEventListener("click", () => {
+          const taskId = btn.dataset.id;
+
+          if (btn.name === "edit") {
+            location.href = `/tasks/${taskId}/edit`;
+          } else if (btn.name === "delete") {
+            fetch(`/tasks/${taskId}`, {
+              method: "DELETE",
+            }).then(() => {
+              window.location.href = "/tasks";
+            });
+          }
+        });
+      });
+    </script>
   </body>
 </html>

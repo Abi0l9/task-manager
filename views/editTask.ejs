@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <%- include('./base/head') %>
+    <title>Create Task</title>
+  </head>
+  <body>
+    <%- include('./base/header') %>
+    <div class="text-center w-3/4 flex px-4 mx-auto md:w-2/4 items-center my-3">
+      Edit task : <%= task.title %>
+    </div>
+
+    <form
+      action="/tasks/<%= task.id %>"
+      id="form"
+      method="patch"
+      enctype="application/x-www-form-urlencoded"
+      class="flex flex-col w-3/4 px-4 mx-auto md:w-2/4"
+    >
+      <div
+        class="hidden"
+        id="id"
+        data-completed="<%= task.completed %>"
+        data-id="<%= task.id %>"
+      ></div>
+      <div class="flex flex-col w-full my-2">
+        <label for="title" class="text-sm">Title</label>
+        <input
+          type="text"
+          id="title"
+          name="title"
+          value="<%= task.title %>"
+          placeholder="e.g Morning Routine"
+          class="border my-1 border-gray-500 w-full py-1 px-2 rounded-md outline-none active:border-blue-900 hover:border-blue-700"
+        />
+        <p class="text-red-500 text-xs text-[4px] my-1" id="titleMsg"></p>
+      </div>
+      <div class="flex flex-col w-full my-2">
+        <label for="description" class="text-sm">Description</label>
+        <textarea
+          type="text"
+          id="description"
+          name="description"
+          rows="3"
+          placeholder="write a short description about the task..."
+          class="resize-none border my-1 border-gray-500 w-full py-1 px-2 row-10 rounded-md outline-none active:border-blue-900 hover:border-blue-700"
+        >
+<%= task.description %></textarea
+        >
+      </div>
+      <div class="flex flex-row gap-x-2 my-2 items-start justify-start">
+        <input
+          type="checkbox"
+          id="completed"
+          name="completed"
+          class="border my-1 ml-0 border-gray-500 py-1 px-2 rounded-md outline-none active:border-blue-900 hover:border-blue-700"
+        />
+        <label for="completed" class="text-sm">Completed?</label>
+      </div>
+      <div class="flex flex-row justify-between gap-x-6 items-center w-full">
+        <div class="flex flex-col w-1/2 my-2">
+          <input
+            type="submit"
+            id="submitBtn"
+            value="Make changes"
+            class="bg-gray-800 text-gray-300 w-full p-2 rounded-md active:bg-gray-900 hover:bg-gray-600"
+          />
+        </div>
+        <div class="flex flex-col w-1/2 my-2">
+          <input
+            type="button"
+            id="cancelBtn"
+            value="Cancel"
+            class="bg-red-800 text-gray-300 w-full p-2 rounded-md active:bg-red-900 hover:bg-red-600"
+          />
+        </div>
+      </div>
+    </form>
+    <script>
+      const title = document.querySelector("#title");
+      const description = document.querySelector("#description");
+      const completed = document.querySelector("#completed");
+      const message = document.querySelector("#titleMsg");
+      const cancelBtn = document.querySelector("#cancelBtn");
+      const form = document.querySelector("form");
+
+      const id = document.querySelector("#id").dataset.id;
+      const completedState = document.querySelector("#id").dataset.completed;
+
+      //   console.log(completedState);
+      //   console.log(completed.value);
+
+      //   completed.checked = completedState;
+
+      cancelBtn.addEventListener("click", () => {
+        location.href = `/tasks/${id}`;
+      });
+
+      form.addEventListener("submit", (e) => {
+        const data = {
+          title: title.value,
+          description: description.value,
+          completed: completed.checked,
+        };
+
+        if (title.value === "") {
+          e.preventDefault();
+          message.textContent = "please, add a title.";
+        } else {
+          message.textContent = "";
+          fetch(`/tasks/${id}`, {
+            method: "PATCH",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(data),
+          });
+        }
+      });
+    </script>
+  </body>
+</html>
